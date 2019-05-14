@@ -2,14 +2,11 @@
     
     include 'connection.php';
 
-    print_r($_POST['check']);
-    if(!isset($_POST['check'])) 
+    if(!isset($_POST['check']))
         header("Location: index.php?m=noSelect");
     else{
 
-        $array = $_POST['check'];
-
-        foreach($array as $id){
+        foreach($_POST['check'] as $id){
             //elimino riga
             if(isset($_POST['delete'])) $stmt = $connection->prepare("DELETE FROM todolist WHERE id=?"); 
             else if(isset($_POST['confirm'])) $stmt = $connection->prepare("UPDATE todolist SET done='1' WHERE id=?");
@@ -19,6 +16,6 @@
             $stmt->close();
         }
 
-        //header("Location: index.php");
+        header("Location: index.php");
     }
 ?>

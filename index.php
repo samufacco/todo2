@@ -104,10 +104,10 @@
             <?php   
 
             //input di scelta: delete-confirm-unconfirm
-            echo '<input name="delete" type="submit" onclick="if(confirm("Do you want to delete them?")) return true; return false;"
-                        class="btn btn-outline-danger border border-0 align-self-end d-inline" value="Delete all selected.">';
-            echo '<input name="confirm" type="submit" onclick="if(confirm("Do you want to confirm them?")) return true; return false;"
-                        class="btn btn-outline-success border border-0 align-self-end d-inline" value="Confirm all selected.">';
+            echo '<input name="delete" type="submit" class="btn btn-outline-danger border border-0 align-self-end d-inline" 
+                        value="Delete all selected.">';
+            echo '<input name="confirm" type="submit" class="btn btn-outline-success border border-0 align-self-end d-inline" 
+                    value="Confirm all selected.">';
             echo '<input name="unconfirm" type="submit" class="btn btn-outline-secondary border border-0 align-self-end d-inline" 
                     value="Unconfirm all selected.">';
             
@@ -123,7 +123,7 @@
             $stmt = $connection->prepare("SELECT * FROM todolist WHERE done='0' ORDER BY scadenza");
             $stmt->execute();
             $var = $stmt->get_result();
-
+            
             //per ogni riga di non fatti
             foreach($var as $riga){    
 
@@ -142,7 +142,7 @@
 
                         <div class="form-group form-check">
                             <label class="form-check-label">
-                            <input class="form-check-input" name="check[]" type="checkbox" value="'.$riga['id'].'">
+                            <input class="form-check-input" name="check['.$riga['id'].']" type="checkbox" value="'.$riga['id'].'">
                             </label>
                         </div>
                        </div>';
@@ -152,6 +152,7 @@
             $stmt2->execute();
             $var2 = $stmt2->get_result();
 
+            //per ogni riga di già fatti
             foreach($var2 as $riga){
 
                 echo ' <div class="sticker" style="background-color: rgb(120, 255, 120);">
@@ -160,11 +161,10 @@
 
                         <div class="form-group form-check">
                             <label class="form-check-label">
-                            <input class="form-check-input" name="check[]" type="checkbox" value="'.$riga['id'].'">
+                            <input class="form-check-input" name="check['.$riga['id'].']" type="checkbox" value="'.$riga['id'].'">
                             </label>
                         </div>
-                
-                    </div>';
+                       </div>';
             }
             $stmt2->close();
 
