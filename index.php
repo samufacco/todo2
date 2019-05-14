@@ -28,6 +28,10 @@
             color: grey;
         }
 
+        input{
+            margin: 4px;
+        }
+
         .sticker {
 
             margin: 10px 0px 10px 0px;
@@ -69,7 +73,7 @@
                                     <button type="submit" class="btn btn-outline-success border border-0 ">
                                             <i class="fa fa-check-square"></i> Edit           
                                     </button> 
-                                </div> <script> edit(); </script>';
+                                </div>';
 
                         }else{
 
@@ -99,27 +103,25 @@
         <form action="upload.php" method="post">
             <?php   
 
-            if(isset($_GET['m'])){
-
-                if($_GET['m'] == 'error')
-                    echo '<div class="alert alert-danger" role="alert">
-                    ERRORE! Inserimento non valido o non permesso.</div>'; 
-
-                if($_GET['m'] == 'noSelect')
-                    echo '<div class="alert alert-danger" role="alert">
-                    ERRORE! Nessun elemento selezionato.</div>'; 
-                
-                    
-            }
-
+            //input di scelta: delete-confirm-unconfirm
             echo '<input name="delete" type="submit" onclick="if(confirm("Do you want to delete them?")) return true; return false;"
                         class="btn btn-outline-danger border border-0 align-self-end d-inline" value="Delete all selected.">';
-            echo '<input name="confirm" type="submit" onclick="if(confirm("Do you want to confim them?")) return true; return false;"
+            echo '<input name="confirm" type="submit" onclick="if(confirm("Do you want to confirm them?")) return true; return false;"
                         class="btn btn-outline-success border border-0 align-self-end d-inline" value="Confirm all selected.">';
+            echo '<input name="unconfirm" type="submit" class="btn btn-outline-secondary border border-0 align-self-end d-inline" 
+                    value="Unconfirm all selected.">';
+            
+            if(isset($_GET['m'])){
+                if($_GET['m'] == 'error')
+                    echo '<div class="alert alert-danger" role="alert">
+                        ERROR! This action is not allowed!</div>';
+                else if($_GET['m'] == 'noSelect')
+                    echo '<div class="alert alert-danger" role="alert">
+                        ERROR! Nothing selected!</div>';
+            }
 
             $stmt = $connection->prepare("SELECT * FROM todolist WHERE done='0' ORDER BY scadenza");
             $stmt->execute();
-
             $var = $stmt->get_result();
 
             //per ogni riga di non fatti
@@ -146,10 +148,8 @@
                        </div>';
             }
 
-            $stmt2 = $connection->prepare("SELECT * FROM todolist WHERE done='1' ORDER BY scadenza"); 
-
+            $stmt2 = $connection->prepare("SELECT * FROM todolist WHERE done='1' ORDER BY scadenza");
             $stmt2->execute();
-
             $var2 = $stmt2->get_result();
 
             foreach($var2 as $riga){
